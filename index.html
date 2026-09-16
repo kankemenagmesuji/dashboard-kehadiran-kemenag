@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kehadiran Pejabat - Kementerian Agama</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-mosque"></i>
+                <h2>KEMENAG</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#kehadiran" class="nav-item" data-section="kehadiran">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Kehadiran</span>
+                </a>
+                <a href="#pejabat" class="nav-item" data-section="pejabat">
+                    <i class="fas fa-users"></i>
+                    <span>Data Pejabat</span>
+                </a>
+                <a href="#laporan" class="nav-item" data-section="laporan">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Laporan</span>
+                </a>
+                <a href="#pengaturan" class="nav-item" data-section="pengaturan">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/40" alt="User">
+                    <div class="user-info">
+                        <p class="user-name">Admin</p>
+                        <p class="user-role">Operator</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Dashboard Kehadiran Pejabat</h1>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Cari pejabat...">
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notif-badge">3</span>
+                    </div>
+                    <div class="date-time">
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon hadir">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Hadir</h3>
+                                <p class="stat-number" id="hadirCount">24</p>
+                                <span class="stat-label">Hari ini</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon tidak-hadir">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Tidak Hadir</h3>
+                                <p class="stat-number" id="tidakHadirCount">5</p>
+                                <span class="stat-label">Hari ini</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon izin">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Izin</h3>
+                                <p class="stat-number" id="izinCount">8</p>
+                                <span class="stat-label">Hari ini</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon sakit">
+                                <i class="fas fa-hospital-user"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Sakit</h3>
+                                <p class="stat-number" id="sakitCount">2</p>
+                                <span class="stat-label">Hari ini</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h2>Grafik Kehadiran Minggu Ini</h2>
+                            <canvas id="kehadiranChart"></canvas>
+                        </div>
+
+                        <div class="chart-card">
+                            <h2>Persentase Status Kehadiran</h2>
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h2>Aktivitas Terkini</h2>
+                        <div class="activity-list">
+                            <div class="activity-item hadir">
+                                <div class="activity-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Dr. H. Yaqut Cholil Qoumas</p>
+                                    <span class="activity-status">Check-in: 08:00 AM</span>
+                                </div>
+                                <span class="activity-time">5 menit lalu</span>
+                            </div>
+
+                            <div class="activity-item izin">
+                                <div class="activity-icon">
+                                    <i class="fas fa-clipboard"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Prof. Muhadjir Effendy</p>
+                                    <span class="activity-status">Izin: Rapat dengan Presiden</span>
+                                </div>
+                                <span class="activity-time">2 jam lalu</span>
+                            </div>
+
+                            <div class="activity-item sakit">
+                                <div class="activity-icon">
+                                    <i class="fas fa-heart</i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Nur Cholis</p>
+                                    <span class="activity-status">Sakit: Demam</span>
+                                </div>
+                                <span class="activity-time">4 jam lalu</span>
+                            </div>
+
+                            <div class="activity-item hadir">
+                                <div class="activity-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Wahyudi Setiawan</p>
+                                    <span class="activity-status">Check-in: 07:45 AM</span>
+                                </div>
+                                <span class="activity-time">1 jam lalu</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kehadiran Section -->
+                <section id="kehadiran-section" class="section">
+                    <div class="section-header">
+                        <h2>Data Kehadiran Harian</h2>
+                        <div class="filter-controls">
+                            <input type="date" id="filterDate" class="filter-input">
+                            <select id="filterStatus" class="filter-input">
+                                <option value="">Semua Status</option>
+                                <option value="hadir">Hadir</option>
+                                <option value="tidak-hadir">Tidak Hadir</option>
+                                <option value="izin">Izin</option>
+                                <option value="sakit">Sakit</option>
+                            </select>
+                            <button class="btn-primary" id="exportBtn">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Pejabat</th>
+                                    <th>Jabatan</th>
+                                    <th>Jam Masuk</th>
+                                    <th>Jam Keluar</th>
+                                    <th>Status</th>
+                                    <th>Keterangan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Dr. H. Yaqut Cholil Qoumas</td>
+                                    <td>Menteri Agama</td>
+                                    <td>08:00</td>
+                                    <td>17:00</td>
+                                    <td><span class="badge hadir">Hadir</span></td>
+                                    <td>-</td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon danger" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Prof. Muhadjir Effendy</td>
+                                    <td>Wakil Menteri</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td><span class="badge izin">Izin</span></td>
+                                    <td>Rapat dengan Presiden</td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon danger" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Nur Cholis</td>
+                                    <td>Direktur Jenderal</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td><span class="badge sakit">Sakit</span></td>
+                                    <td>Demam tinggi</td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon danger" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Wahyudi Setiawan</td>
+                                    <td>Direktur Jenderal</td>
+                                    <td>07:45</td>
+                                    <td>16:30</td>
+                                    <td><span class="badge hadir">Hadir</span></td>
+                                    <td>-</td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon danger" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Zainut Tauhid Sa'adi</td>
+                                    <td>Sekretaris Jenderal</td>
+                                    <td>08:15</td>
+                                    <td>17:15</td>
+                                    <td><span class="badge hadir">Hadir</span></td>
+                                    <td>-</td>
+                                    <td>
+                                        <button class="btn-icon" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon danger" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Data Pejabat Section -->
+                <section id="pejabat-section" class="section">
+                    <div class="section-header">
+                        <h2>Data Pejabat</h2>
+                        <button class="btn-primary" id="tambahPejabatBtn">
+                            <i class="fas fa-plus"></i> Tambah Pejabat
+                        </button>
+                    </div>
+
+                    <div class="pejabat-grid">
+                        <div class="pejabat-card">
+                            <div class="pejabat-header">
+                                <img src="https://via.placeholder.com/150" alt="Profile">
+                                <div class="pejabat-status online">Online</div>
+                            </div>
+                            <div class="pejabat-body">
+                                <h3>Dr. H. Yaqut Cholil Qoumas</h3>
+                                <p class="pejabat-position">Menteri Agama</p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-envelope"></i> yaqut@kemenag.go.id
+                                </p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-phone"></i> +62 274 514921
+                                </p>
+                                <div class="pejabat-actions">
+                                    <button class="btn-small">Edit</button>
+                                    <button class="btn-small danger">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pejabat-card">
+                            <div class="pejabat-header">
+                                <img src="https://via.placeholder.com/150" alt="Profile">
+                                <div class="pejabat-status offline">Offline</div>
+                            </div>
+                            <div class="pejabat-body">
+                                <h3>Prof. Muhadjir Effendy</h3>
+                                <p class="pejabat-position">Wakil Menteri</p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-envelope"></i> muhadjir@kemenag.go.id
+                                </p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-phone"></i> +62 274 514922
+                                </p>
+                                <div class="pejabat-actions">
+                                    <button class="btn-small">Edit</button>
+                                    <button class="btn-small danger">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pejabat-card">
+                            <div class="pejabat-header">
+                                <img src="https://via.placeholder.com/150" alt="Profile">
+                                <div class="pejabat-status online">Online</div>
+                            </div>
+                            <div class="pejabat-body">
+                                <h3>Nur Cholis</h3>
+                                <p class="pejabat-position">Direktur Jenderal PAI</p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-envelope"></i> nurcholis@kemenag.go.id
+                                </p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-phone"></i> +62 274 514923
+                                </p>
+                                <div class="pejabat-actions">
+                                    <button class="btn-small">Edit</button>
+                                    <button class="btn-small danger">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pejabat-card">
+                            <div class="pejabat-header">
+                                <img src="https://via.placeholder.com/150" alt="Profile">
+                                <div class="pejabat-status online">Online</div>
+                            </div>
+                            <div class="pejabat-body">
+                                <h3>Wahyudi Setiawan</h3>
+                                <p class="pejabat-position">Direktur Jenderal Bimas</p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-envelope"></i> wahyudi@kemenag.go.id
+                                </p>
+                                <p class="pejabat-contact">
+                                    <i class="fas fa-phone"></i> +62 274 514924
+                                </p>
+                                <div class="pejabat-actions">
+                                    <button class="btn-small">Edit</button>
+                                    <button class="btn-small danger">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Laporan Section -->
+                <section id="laporan-section" class="section">
+                    <div class="section-header">
+                        <h2>Laporan Kehadiran</h2>
+                        <div class="report-controls">
+                            <select id="reportMonth" class="filter-input">
+                                <option>Januari</option>
+                                <option>Februari</option>
+                                <option>Maret</option>
+                                <option selected>September</option>
+                                <option>Oktober</option>
+                                <option>November</option>
+                                <option>Desember</option>
+                            </select>
+                            <input type="number" id="reportYear" value="2026" min="2020" max="2030" class="filter-input">
+                            <button class="btn-primary" id="generateReportBtn">
+                                <i class="fas fa-file-pdf"></i> Generate PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="report-summary">
+                        <div class="report-card">
+                            <h3>Total Hari Kerja</h3>
+                            <p class="report-value">22</p>
+                        </div>
+                        <div class="report-card">
+                            <h3>Total Hadir</h3>
+                            <p class="report-value">528</p>
+                        </div>
+                        <div class="report-card">
+                            <h3>Total Izin</h3>
+                            <p class="report-value">89</p>
+                        </div>
+                        <div class="report-card">
+                            <h3>Total Sakit</h3>
+                            <p class="report-value">23</p>
+                        </div>
+                    </div>
+
+                    <div class="report-table">
+                        <h3>Detail Laporan Bulanan</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nama Pejabat</th>
+                                    <th>Hadir</th>
+                                    <th>Izin</th>
+                                    <th>Sakit</th>
+                                    <th>Tidak Hadir</th>
+                                    <th>Persentase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dr. H. Yaqut Cholil Qoumas</td>
+                                    <td>22</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td><span class="percentage high">100%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Prof. Muhadjir Effendy</td>
+                                    <td>20</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td><span class="percentage medium">90.9%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nur Cholis</td>
+                                    <td>19</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td><span class="percentage medium">86.4%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Wahyudi Setiawan</td>
+                                    <td>21</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td><span class="percentage high">95.5%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Pengaturan Section -->
+                <section id="pengaturan-section" class="section">
+                    <div class="section-header">
+                        <h2>Pengaturan Sistem</h2>
+                    </div>
+
+                    <div class="settings-container">
+                        <div class="settings-card">
+                            <h3>Pengaturan Jam Kerja</h3>
+                            <div class="setting-item">
+                                <label>Jam Masuk</label>
+                                <input type="time" value="08:00" class="form-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Jam Keluar</label>
+                                <input type="time" value="17:00" class="form-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Jam Istirahat Mulai</label>
+                                <input type="time" value="12:00" class="form-input">
+                            </div>
+                            <div class="setting-item">
+                                <label>Jam Istirahat Selesai</label>
+                                <input type="time" value="13:00" class="form-input">
+                            </div>
+                            <button class="btn-primary">Simpan Pengaturan</button>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Notifikasi</h3>
+                            <div class="setting-toggle">
+                                <label>Notifikasi Email</label>
+                                <input type="checkbox" class="toggle-switch" checked>
+                            </div>
+                            <div class="setting-toggle">
+                                <label>Notifikasi SMS</label>
+                                <input type="checkbox" class="toggle-switch">
+                            </div>
+                            <div class="setting-toggle">
+                                <label>Notifikasi Browser</label>
+                                <input type="checkbox" class="toggle-switch" checked>
+                            </div>
+                            <button class="btn-primary">Simpan Preferensi</button>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Keamanan Akun</h3>
+                            <div class="setting-item">
+                                <label>Password Lama</label>
+                                <input type="password" class="form-input" placeholder="Masukkan password lama">
+                            </div>
+                            <div class="setting-item">
+                                <label>Password Baru</label>
+                                <input type="password" class="form-input" placeholder="Masukkan password baru">
+                            </div>
+                            <div class="setting-item">
+                                <label>Konfirmasi Password</label>
+                                <input type="password" class="form-input" placeholder="Konfirmasi password baru">
+                            </div>
+                            <button class="btn-primary">Ubah Password</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal untuk Tambah Pejabat -->
+    <div id="modalTambahPejabat" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tambah Pejabat Baru</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" class="form-input" placeholder="Masukkan nama lengkap">
+                </div>
+                <div class="form-group">
+                    <label>Jabatan</label>
+                    <select class="form-input">
+                        <option>Pilih Jabatan</option>
+                        <option>Menteri Agama</option>
+                        <option>Wakil Menteri</option>
+                        <option>Direktur Jenderal</option>
+                        <option>Sekretaris Jenderal</option>
+                        <option>Kepala Biro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-input" placeholder="Masukkan email">
+                </div>
+                <div class="form-group">
+                    <label>Nomor Telepon</label>
+                    <input type="tel" class="form-input" placeholder="Masukkan nomor telepon">
+                </div>
+                <div class="form-group">
+                    <label>Foto Profil</label>
+                    <input type="file" class="form-input" accept="image/*">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-close-btn">Batal</button>
+                <button class="btn-primary">Simpan Pejabat</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
